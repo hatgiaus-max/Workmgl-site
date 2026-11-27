@@ -1,0 +1,8 @@
+# Netlify hosts only the backend (functions + Blobs database). The storefront is on Vercel.
+[build]
+  publish = "netlify-site"
+  command = "echo backend-only"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

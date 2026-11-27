@@ -424,9 +424,8 @@ video.hphoto{background:#000}
 <meta property="og:title" content="WORKMGL · Японы Workman хувцас">
 <meta property="og:description" content="Дулаан хүрэм, ус нэвтэрдэггүй гутал, ажлын хувцас. Улаанбаатарт 24 цагт хүргэнэ.">
 <meta property="og:image" content="og.png">
-<script src="firebase-config.js"></script>
 <script>window.__fb=new Promise(r=>window.__fbres=r);window.claude={fb:true,use:async n=>{const f=await window.__fb;return f[n]??null}};</script>
-<script type="module" src="fb.js"></script>
+<script src="store.js"></script>
 </head>
 <body>
 <div class="announce" id="ann" hidden></div>
@@ -1555,11 +1554,11 @@ $("ctReset").addEventListener("click",e=>{const b=e.currentTarget;if(!b.classLis
  CTd=JSON.parse(JSON.stringify(DEFC));CTd.logo=CT.logo;b.classList.remove("arm");b.textContent="Анхны текст рүү буцаах";ctMark();renderContentEd();$("ctmsg").textContent="Анхны текстийг ачааллаа. “Нийтлэх” дарвал сайт дээр гарна."});
 
 let AUTH=null,seenOrd=null;const baseTitle=document.title;
-$("loginForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("lmsg");if(!AUTH){m.textContent="Сантай холбогдоогүй байна. firebase-config.js-ийг шалгана уу.";return}
+$("loginForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("lmsg");if(!AUTH){m.textContent="Сантай холбогдоогүй байна. Хуудсаа дахин ачаалаад оролдоно уу.";return}
  m.textContent="Нэвтэрч байна…";
- try{await AUTH.login($("lemail").value.trim(),$("lpass").value);location.reload()}catch(err){m.textContent="И-мэйл эсвэл нууц үг буруу байна."}});
+ try{await AUTH.login($("lemail").value.trim(),$("lpass").value);location.reload()}catch(err){m.textContent=err&&err.message==="auth_not_configured"?"Админ нэвтрэлт тохируулагдаагүй байна (Netlify → ADMIN_EMAIL, ADMIN_PASSWORD).":err&&/^http_5|abort|fetch/i.test(String(err.message||err.name))?"Сервертэй холбогдож чадсангүй. Дахин оролдоно уу.":"И-мэйл эсвэл нууц үг буруу байна."}});
 $("lreset").addEventListener("click",async()=>{const m=$("lmsg"),em=$("lemail").value.trim();if(!AUTH||!em){m.textContent="Эхлээд и-мэйлээ бичнэ үү.";return}
- try{await AUTH.reset(em);m.textContent="Нууц үг сэргээх холбоосыг и-мэйлээр илгээлээ."}catch(err){m.textContent="Илгээж чадсангүй."}});
+ try{await AUTH.reset(em);m.textContent="Нууц үг сэргээх холбоосыг и-мэйлээр илгээлээ."}catch(err){m.textContent="Нууц үгийг Netlify → Project configuration → Environment variables → ADMIN_PASSWORD хэсгээс солино."}});
 $("logoutBtn").addEventListener("click",async()=>{if(AUTH){await AUTH.logout();location.hash="#top";location.reload()}});
 /* ---------- data ---------- */
 const useSample=note=>{P=SAMPLE.map(x=>clean(x.id,{brand:"Workman",...x}));ready=true;$("srcnote").textContent=note;renderStore();if(isAdmin)renderAdmin()};

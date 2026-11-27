@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "echo skip",
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://workmgl-api.netlify.app/api/:path*" },
+    { "source": "/_blob/:id", "destination": "https://workmgl-api.netlify.app/api/blob/:id" }
+  ],
+  "headers": [
+    { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "/store.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
+  ]
+}
